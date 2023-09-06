@@ -13,11 +13,9 @@
 ;;
 ;; punto-medio :: Punto Punto -> Punto
 (define (punto-medio p q)
-  (if (or (not (punto? p)) (not (punto? q)))
-      (error 'Error "Todos los argumentos deben ser puntos")
-      (punto
-       (/ (+ (punto-x p) (punto-x q)) 2)
-       (/ (+ (punto-y p) (punto-y q)) 2))))
+  (punto
+   (/ (+ (punto-x p) (punto-x q)) 2)
+   (/ (+ (punto-y p) (punto-y q)) 2)))
 
 
 ;; Ejercicio 1.b) La función primero verifica que ambos parámetros
