@@ -35,7 +35,6 @@
     [Vacia]
     [Cons (cabeza any?) (resto Lista?)])
 
-
 ;; Ejercicio 2.a) Recibe un parámetro de tipo Lista.
 ;;                La función utiliza un type-case para
 ;;                sumar 1 cuando la lista no es vacia
@@ -50,11 +49,17 @@
 
 ;; Ejercicio 2.b)
 (define (pertenece? e ls)
-  (error 'pertenece? "Sin implementar"))
+  (type-case Lista ls
+    [Vacia () #false]
+    [Cons (cabeza resto) (if (equal? e cabeza)
+                             #true
+                             (pertenece? e resto))])) 
 
 ;; Ejercicio 2.c)
 (define (intercala ls ks)
-  (error 'intercala "Sin implementar"))
+  (type-case Lista ls
+    [Vacia () ks]
+    [Cons (cabeza resto) (Cons (cabeza (intercala resto ks)))]))
 
 ;; Ejercicio 2.d)
 (define (aplana ls)
