@@ -49,17 +49,11 @@
 
 ;; Ejercicio 2.b)
 (define (pertenece? e ls)
-  (type-case Lista ls
-    [Vacia () #false]
-    [Cons (cabeza resto) (if (equal? e cabeza)
-                             #true
-                             (pertenece? e resto))])) 
+  (error 'pertenece "Sin implementar"))
 
 ;; Ejercicio 2.c)
-(define (intercala ls ks)
-  (type-case Lista ls
-    [Vacia () ks]
-    [Cons (cabeza resto) (Cons (cabeza (intercala resto ks)))]))
+(define (intercala ks ls)
+  (error 'intercala "Sin implementar"))
 
 ;; Ejercicio 2.d)
 (define (aplana ls)
