@@ -1,4 +1,10 @@
 #lang plai
+#|
+Integrantes:
+    Estrada García Luis Gerardo - 319013832
+    Evangelista Tiburcio Jose Manuel - 422007939
+    García Velasco Erick Iram - 318044309
+|#
 
 (define (any? x)
   #t)
@@ -177,7 +183,3 @@
     ;; Si no es una hoja, llamamos recursivamente a hojas para los subárboles y concatenamos los resultados.
     [else (append (hojas (ABB-izq ar)) (hojas (ABB-der ar)))]))
 
-
-;; Punto Extra
-(define (mas-repetido ls)
-  (error 'mas-repetido "Sin implementar"))
