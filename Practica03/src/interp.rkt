@@ -3,9 +3,7 @@
 (require "grammars.rkt")
 (require "parser.rkt")
 
-(define (interp expr))
-
-(define (subst sub-id value expr))
+;(define (interp expr))
 
 ; Función para sustituir un identificador por un valor en una expresión
 (define (subst sub-id value expr)

@@ -1,0 +1,1 @@
+("8.10" ta6le ("feebad6d0670f5d0392c394c74c0f3a0e2256163" . "3f04723796f1c6211a63be061910637deda5e9f9") #"/home/egeras/Documents/Racket/Lenguajes-de-Programacion/Practica03/src/grammars.rkt" (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"plai" #"lang" #"reader.rkt") (collects #"plai" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
