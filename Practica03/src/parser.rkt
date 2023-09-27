@@ -1,6 +1,8 @@
 #lang plai
 
 (require "grammars.rkt")
+; verificar la aridad 1 de sqrt
+;
 
 ; Función para analizar sintácticamente una expresión s-exp
 (define (parse s-exp)

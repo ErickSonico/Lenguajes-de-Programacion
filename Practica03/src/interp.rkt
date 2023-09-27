@@ -6,12 +6,12 @@
 ;; Función interp del lenguaje para el análisis semántico.
 (define (interp expr)
   (match expr
-    [(id i) (error 'interp "Identificador libre")]
+    [(id i) (error 'interp "Variable libre" id)]
     ; Si recibe id, num, bool o strinG simplemente las regresa
     [(num expr) expr]
     [(bool expr) expr]
     [(strinG expr) expr]
-    ; si la WAE es una op, aplica la expr a cada elemento de args
+    ; si la WAE es una op, aplica la expr a cada elemento de args interpretado
     [(op expr args) (apply expr (map(lambda(expr)(interp expr)) args))]
     [(with assigns body) 
             (interp (foldl
