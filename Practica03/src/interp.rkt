@@ -22,12 +22,7 @@
                 (with-assigns expr))
             )
         ]
-    [(with* (cons (binding id value) cdr-bindings) body)
-     (if (empty? cdr-bindings)
-         (interp (subst body id value))
-         (interp (subst (with* cdr-bindings body)
-                        id
-                        (num (interp value)))))]
+    [(with* assigns body) #t]
     ; Si la expresión no es ninguna de las anteriores, interp no puede trabajar con ella
     ; por lo que regresa un error
     [else (error 'interp "La expresión no es válida")]
