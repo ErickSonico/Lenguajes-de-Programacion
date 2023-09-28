@@ -4,6 +4,9 @@
 (require "parser.rkt")
 
 ;; Función interp del lenguaje para el análisis semántico.
+;; Recibe un dato del tipo WAE definido en grammars.rkt
+;;
+;; interp :: WAE -> WAE
 (define (interp expr)
   (type-case WAE expr
     [id (i) (error 'interp "Variable libre" id)]
@@ -26,6 +29,8 @@
     ))
 
 ; Función para convertir un with* a with:
+;;
+;; with*-a-with :: with* -> with
 (define (with*-a-with w)
   (cond
     [(empty? (with*-assigns w)) (with*-body w)]
