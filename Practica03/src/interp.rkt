@@ -9,7 +9,7 @@
 ;; interp :: WAE -> WAE
 (define (interp expr)
   (type-case WAE expr
-    [id (i) (error 'interp "Variable libre" id)]
+    [id (i) (error 'interp (format "Variable libre: ~a" (eval expr)))]
     ; Si recibe id, num, bool o strinG simplemente las regresa
     [num (expr) expr]
     [bool (expr) expr]
@@ -36,6 +36,16 @@
     [(empty? (with*-assigns w)) (with*-body w)]
     [else (with (list (car (with*-assigns w))))
           (with*-a-with (with* (cdr (with*-assigns w)) (with*-body w)))]))
+
+; Función que sustituye una lista de bindings por valores
+(define (subst-list-bindings assigns body)
+  (if (empty? assigns)
+      assigns
+      (let ([head (car assigns)])
+        (subst-list-bindings (cdr assigns)
+                             (subst (binding-id head)
+                                    (binding-value head)
+                                    body)))))
 
 ; Función para sustituir un identificador por un valor en una expresión
 (define (subst sub-id value expr)

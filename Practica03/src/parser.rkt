@@ -21,18 +21,16 @@
          ; Manejar el caso especial de la operación 'with'
          [(eq? proc 'with)
           (let* ([bindings (first args)]
-                [body (second args)])
+                 [body (second args)])
             ; Verificar si hay identificadores duplicados en los bindings
             (if (has-duplicate-bindings? bindings)
                 (error 'parse "El identificador está declarado más de una vez")
-                (with (map parse-binding bindings) (parse body))))
-          ]
+                (with (map parse-binding bindings) (parse body))))]
 
-         ; Manejar el caso especial de la operación 'with'
+         ; Manejar el caso especial de la operación 'with*'
          [(eq? proc 'with*)
           (let* ([bind (first args)]
                 [bod (map list-to-binding bind)])
-            ; Verificar si hay identificadores duplicados en los bindings
             (with* bod (parse (second args))))
           ]
          
