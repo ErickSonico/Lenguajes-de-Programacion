@@ -14,6 +14,14 @@
   [with* (assigns (listof Binding?)) (body WAE?)]
   [op (f procedure?) (args (listof WAE?))])
 
+; Función que crea el procedimiento str?
+(define (str? s)
+  string? s)
+
+; Función que crea el procedimiento str-length
+(define (str-length s)
+  string-length s)
+
 ; Función auxiliar para hacer la función anD que verifica si todos los elementos de una lista son iguales
 (define (aux-anD ls)
   (cond
