@@ -16,19 +16,12 @@
     [strinG (expr) expr]
     ; si la WAE es una op, aplica la expr a cada elemento de args interpretado
     [op (expr args) (apply expr (map(lambda(expr)(interp expr)) args))]
-    [with (assigns body) 
-            (interp (foldl
-                (lambda (bdg expr-res)
-                    (subst (binding-id bdg) (binding-value bdg) expr-res)
-                )
-                (with-body expr)
-                (with-assigns expr))
-            )
-        ]
+    ; casos with, el with* se ve como withs anidados
+    [with (assigns body) (interp (subst-list-bindings assigns body))]
     [with* (assigns body) (interp (with*-a-with (with* assigns body)))]
     ))
 
-; Función para convertir un with* a with:
+; Función para convertir un with* a with anidados:
 ;;
 ;; with*-a-with :: with* -> with
 (define (with*-a-with w)
@@ -36,6 +29,18 @@
     [(empty? (with*-assigns w)) (with*-body w)]
     [else (with (list (car (with*-assigns w))))
           (with*-a-with (with* (cdr (with*-assigns w)) (with*-body w)))]))
+
+;; Función subst-list-bindings que realiza una sustitución en una lista de bindings
+(define (subst-list-bindings assigns body)
+  (if (empty? assigns)
+      ; no hay más asignacines por hacer
+      assigns
+      ; sustituye la primera asignación en el body y hace una llamada recursiva
+      (let ([head (car assigns)])
+        (subst-list-bindings (cdr assigns)
+                             (subst (binding-id head)
+                                    (binding-value head)
+                                    body)))))
 
 ; Función para sustituir un identificador por un valor en una expresión
 (define (subst sub-id value expr)
