@@ -3,21 +3,26 @@
 (require "grammars.rkt")
 (require "parser.rkt")
 
+
+;; Verifica si un valor esta contenido en una caja y es del tipo RCFSBAE-Val.
 (define (boxed-RCFSBAE-Val? b)
   (and (box? b) (RCFSBAE-Val? (unbox b))))
 
+;; Define los valores posibles en el lenguaje RCFSBAE, incluyendo numeros, booleanos, strings y cierres.
 (define-type RCFSBAE-Val
   [num-v (n number?)]
   [bool-v (b boolean?)]
   [string-v (s string?)]
   [closure-v (args (listof symbol?)) (body RCFSBAE?) (env Env?)])
 
+;; Define el entorno de evaluacion con ambientes vacios, cons y recursivos.
 (define-type Env
   [mt-env]
   [cons-env (id symbol?) (value RCFSBAE-Val?) (rest-env Env?)]
   [rec-cons-env (id symbol?) (value boxed-RCFSBAE-Val?) (rest-env Env?)])
 
 ;; RCFSBAE x Env -> RCFSBAE-Val
+;; Interpreta una expresion RCFSBAE en un entorno dado.
 (define (interp expr env)
   (match expr
     [(id i) (lookup i env)]
@@ -54,31 +59,34 @@
        (type-case RCFSBAE-Val valor-func
          [closure-v (formales cuerpo env-cierre)
                     (if (= (length formales) (length args))
-                        ;; Evaluar el cuerpo de la función en el ambiente del cierre
-                        ;; después de extenderlo con los valores de los argumentos
+                        ;; Evaluar el cuerpo de la funcion en el ambiente del cierre
+                        ;; despues de extenderlo con los valores de los argumentos
                         (let ([nuevo-env (foldl (lambda (id-arg valor-arg env-acum)
                                                   (cons-env (id-arg) (interp valor-arg env) (env-acum)))
                                                 (env-cierre)
                                                 (formales)
                                                 (args))])
                           (interp cuerpo nuevo-env))
-                        (error 'interp "El número de parámetros formales no coincide con el número de parámetros actuales"))]
-         [else (error 'interp "Intentando aplicar un valor que no es función")]))]
+                        (error 'interp "El numero de parametros formales no coincide con el numero de parametros actuales"))]
+         [else (error 'interp "Intentando aplicar un valor que no es funcion")]))]
     ))
 
-
+;; Verifica si una lista esta compuesta exclusivamente de numeros.
 (define (list-numbers? xs)
   (cond
     [(empty? xs) #t]
     [(number? (car xs)) (list-numbers? (cdr xs))]
     [else #f]))
 
+;; Verifica si una lista esta compuesta exclusivamente de booleanos.
 (define (list-booleans? xs)
   (cond
     [(empty? xs) #t]
     [(boolean? (car xs)) (list-booleans? (cdr xs))]
     [else #f]))
 
+
+;; Verifica si una lista esta compuesta exclusivamente de strings.
 (define (list-strings? xs)
   (cond
     [(empty? xs) #t]
@@ -87,6 +95,7 @@
 
 
 ;; symbol x Env -> RCFSBAE-Val
+;; Busca un simbolo en un entorno y devuelve su valor correspondiente.
 (define (lookup sub-id env)
   (match env
     [(mt-env) (error 'interp (format "Variable libre ~a" sub-id))]
@@ -99,6 +108,8 @@
          (unbox value)
          (lookup sub-id rest-env))]))
 
+
+;; Construye un entorno recursivo a partir de una lista de bindings.
 (define (rec-env bindings env)
   (if (empty? bindings)
       env
